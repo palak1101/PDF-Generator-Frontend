@@ -1,80 +1,89 @@
-import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
-import './Editor.css';
-import { Button } from 'react-bootstrap'
+import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import "./Editor.css";
 
-// const api = axios.create({
-//     baseURL: 'http://localhost:5000',
-// });
+const DEFAULT_HTML_CODE = `
+<html>
+\t<head>
+\t\t<style>
+\t\t\t.newpage{
+\t\t\t\tpage-break-before: always;
+\t\t\t}
+\t\t</style>
+\t</head>
+\t<body>
+
+\t</body>
+</html>
+`;
 
 const Editor = () => {
+  const [html, setHtml] = useState(DEFAULT_HTML_CODE);
+  const resultRef = useRef();
 
-    const [html, setHtml] = useState('');
-    const resultRef = useRef();
+  const handleHtmlChange = (event) => {
+    setHtml(event.target.value);
+  };
 
-    const handleHtmlChange = (event) => {
-        setHtml(event.target.value);
-    };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const title = window.prompt("Enter a title:");
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const title = window.prompt("Enter a title:");
-
-        try {
-            const response = await axios.post('http://localhost:5000/save-data', { htmlCode: html, title: title });
-            console.log(response.data);
-        } catch (err) {
-            console.error(err);
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/saveTemplate`,
+        {
+          htmlCode: html,
+          title: title,
         }
-    };
+      );
+      let res = response.data;
+      console.log(res);
 
-    useEffect(() => {
-        if (resultRef.current) {
-            resultRef.current.innerHTML = html;
-        }
-    }, [html])
+      if (res.success) {
+        return alert(
+          "Template saved successfully with ID: " + res?.data?.template_id
+        );
+      } else {
+        return alert("Something went wrong " + res?.msg);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-    return (
-        <div>
-            <Button className="save-button" variant="success" onClick={handleSubmit}>Save</Button>{' '}
+  useEffect(() => {
+    if (resultRef.current) {
+      resultRef.current.innerHTML = html;
+    }
+  }, [html]);
 
+  return (
+    <div className="mt-4">
+      <div className="main-editor">
+        <div className="html-panel">
+          <h2>HTML Input</h2>
 
-
-            <div className="main-editor">
-
-                <div className='html-panel'>
-                    <h2>HTML Input</h2>
-
-                    <div className="header-input">
-                        <textarea placeholder="Enter header html" />
-                    </div>
-
-
-                    <div className="input-panel">
-
-                        <textarea
-                            value={html}
-                            onChange={handleHtmlChange}
-                            placeholder="Enter HTML code here..."
-                        />
-                    </div>
-
-                    <div className="footer-input">
-                        <textarea placeholder="Enter footer html" />
-                    </div>
-
-                </div>
-
-
-
-                <div className="preview-panel">
-                    <h2>Preview</h2>
-                    <div ref={resultRef}></div>
-                </div>
-
-            </div>
+          <div className="input-panel">
+            <textarea
+              value={html}
+              onChange={handleHtmlChange}
+              placeholder="Enter HTML code here..."
+            />
+          </div>
         </div>
-    );
-}
+
+        <div className="preview-panel">
+          <h2>Preview</h2>
+          <div ref={resultRef}></div>
+        </div>
+      </div>
+
+      <button className="save-button btn btn-success" onClick={handleSubmit}>
+        Save Template
+      </button>
+    </div>
+  );
+};
 
 export default Editor;
