@@ -1,16 +1,14 @@
-import React, { useState } from "react";
-import "./App.css";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 import NavigationBar from "./components/NavigationBar";
-import Editor from "./components/Editor";
-import Footer from "./components/Footer";
-// import {Button} from 'react-bootstrap'
+import EditorPage from "./components/Editor";
 
 const App = () => {
   return (
     <div className="App">
       <NavigationBar />
-      <Editor />
+      <EditorPage />
     </div>
   );
 };

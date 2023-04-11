@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import Editor from "react-simple-code-editor";
+import { highlight, languages } from "prismjs/components/prism-core";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
+import "prismjs/themes/prism.css";
 import "./Editor.css";
 
 const DEFAULT_HTML_CODE = `
@@ -17,7 +22,7 @@ const DEFAULT_HTML_CODE = `
 </html>
 `;
 
-const Editor = () => {
+const EditorPage = () => {
   const [html, setHtml] = useState(DEFAULT_HTML_CODE);
   const resultRef = useRef();
 
@@ -65,10 +70,18 @@ const Editor = () => {
           <h2>HTML Input</h2>
 
           <div className="input-panel">
-            <textarea
+            {/* <textarea
               value={html}
               onChange={handleHtmlChange}
               placeholder="Enter HTML code here..."
+            /> */}
+
+            <Editor
+              value={html}
+              onValueChange={(value) => setHtml(value)}
+              highlight={(code) => highlight(code, languages.text)}
+              padding={20}
+              placeholder={"WRITE YOUR HTML HERE"}
             />
           </div>
         </div>
@@ -86,4 +99,4 @@ const Editor = () => {
   );
 };
 
-export default Editor;
+export default EditorPage;
