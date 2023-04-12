@@ -22,7 +22,7 @@ const DEFAULT_HTML_CODE = `
 </html>
 `;
 
-const EditorPanel = () => {
+const EditorPage = () => {
   const [html, setHtml] = useState(DEFAULT_HTML_CODE);
   const resultRef = useRef();
 
@@ -99,4 +99,4 @@ const EditorPanel = () => {
   );
 };
 
-export default EditorPanel;
+export default EditorPage;
