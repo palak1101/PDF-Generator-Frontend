@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Home = () => {
   const [templates, setTemplates] = useState([]);
+  const navigate = useNavigate();
 
   const loadTemplates = async () => {
     const result = await axios.get(
@@ -47,16 +48,14 @@ const Home = () => {
                             <td>Otto</td>
                             <td>@mdo</td> */}
             {templates.map((template, index) => (
-              <tr>
+              <tr key={template.template_id}>
                 <th scope="row">{index + 1}</th>
                 <td>{template.title}</td>
-                {/* <td>{templates.htm}</td>
-                                <td>{user.email}</td> */}
                 <td>
-                  <Link className="btn btn-primary m-2">
-                    <i className="fa-sharp fa-solid fa-eye"></i>
-                  </Link>
-                  <Link className="btn btn-success m-2">
+                  <Link
+                    className="btn btn-success m-2"
+                    to={`/editor/${template.template_id}`}
+                  >
                     <i className="fa-solid fa-pencil"></i>
                   </Link>
                   <Link
