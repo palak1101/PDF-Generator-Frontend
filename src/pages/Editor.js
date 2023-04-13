@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import Editor from "react-simple-code-editor";
-import { highlight, languages } from "prismjs/components/prism-core";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-markup";
-import "prismjs/themes/prism.css";
+
+import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/mode-html";
+import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/ext-language_tools";
+import beautify from "js-beautify";
+
 import "./Editor.css";
 import { useParams } from "react-router-dom";
+import Toolbar from "../components/Toolbar";
 
 const DEFAULT_HTML_CODE = `<html>
 \t<head>
@@ -21,11 +24,33 @@ const DEFAULT_HTML_CODE = `<html>
 \t</body>
 </html>`;
 
+const DEFAULT_TEMPLATE = {
+  htmlCode: DEFAULT_HTML_CODE,
+  title: "",
+  template_id: "",
+  orientation: "Portrait",
+  pageSize: "A4",
+};
+
 const EditorPage = () => {
-  const [html, setHtml] = useState(DEFAULT_HTML_CODE);
-  const [title, setTitle] = useState("");
-  const resultRef = useRef();
+  const [template, setTemplate] = useState(DEFAULT_TEMPLATE);
   const { id } = useParams();
+
+  const editorRef = useRef(null);
+
+  const handleFormat = () => {
+    if (editorRef.current) {
+      const session = editorRef.current.editor.getSession();
+      session.getSelection().clearSelection();
+      session.setValue(
+        beautify.html(session.getValue(), {
+          indent_size: 2,
+          wrap_attributes: "auto",
+          preserve_newlines: false,
+        })
+      );
+    }
+  };
 
   useEffect(() => {
     if (id) {
@@ -42,8 +67,7 @@ const EditorPage = () => {
           return alert("Error loading the selected template!");
         }
 
-        setHtml(data.htmlCode);
-        setTitle(data.title);
+        setTemplate(data);
       })
       .catch((error) => {
         console.error(error);
@@ -51,72 +75,51 @@ const EditorPage = () => {
       });
   };
 
-  const handleHtmlChange = (event) => {
-    setHtml(event.target.value);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const title = window.prompt("Enter a title:");
-
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/templates/`,
-        {
-          htmlCode: html,
-          title: title,
-        }
-      );
-      let { success, data } = response.data;
-      console.log(data);
-      if (success) {
-        return alert("Success! " + data.template_id);
-      } else {
-        return alert("Something went wrong!");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    if (resultRef.current) {
-      resultRef.current.innerHTML = html;
-    }
-  }, [html]);
-
   return (
     <div className="mt-4">
+      <Toolbar template={template} setTemplate={setTemplate} />
       <div className="main-editor">
         <div className="html-panel">
-          <h2>{title || "HTML Input"}</h2>
+          <h2 className="text-center">{template.title || "Code Editor"}</h2>
 
           <div className="input-panel">
-            {/* <textarea
-              value={html}
-              onChange={handleHtmlChange}
-              placeholder="Enter HTML code here..."
-            /> */}
-
-            <Editor
-              value={html}
-              onValueChange={(value) => setHtml(value)}
-              highlight={(code) => highlight(code, languages.html)}
-              padding={20}
-              placeholder={"Paste your HTML here!"}
+            <AceEditor
+              ref={editorRef}
+              placeholder="Write your HTML here..."
+              mode="html"
+              theme="monokai"
+              name="html-editor"
+              onChange={(code) => setTemplate({ ...template, htmlCode: code })}
+              fontSize={16}
+              width="100%"
+              // height="100%"
+              showPrintMargin={false}
+              showGutter={true}
+              highlightActiveLine={true}
+              value={template.htmlCode}
+              setOptions={{
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                enableSnippets: false,
+                showLineNumbers: true,
+                tabSize: 2,
+                useWorker: false,
+              }}
             />
+            <button className="btn btn-primary my-2" onClick={handleFormat}>
+              Format
+            </button>
           </div>
         </div>
 
         <div className="preview-panel">
-          <h2>Preview</h2>
-          <div ref={resultRef}></div>
+          <h2 className="text-center">Preview</h2>
+          <iframe
+            srcdoc={template.htmlCode}
+            className="preview-iframe"
+          ></iframe>
         </div>
       </div>
-
-      <button className="save-button btn btn-success" onClick={handleSubmit}>
-        Save Template
-      </button>
     </div>
   );
 };

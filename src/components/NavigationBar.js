@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const NavigationBar = () => {
   return (
@@ -18,12 +18,15 @@ const NavigationBar = () => {
               </li>
 
               <li className="nav-item">
-                <Link className="nav-link" aria-current="page" to="/editor">
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to="/editor"
+                >
                   Editor
                 </Link>
               </li>
             </ul>
-
           </div>
         </div>
       </nav>

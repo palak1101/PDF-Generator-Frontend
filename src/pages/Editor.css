@@ -13,8 +13,18 @@
 }
 
 .input-panel {
+  display: flex;
+  flex-direction: column;
   /* flex: 1; */
-  padding: 20px;
+  /* padding: 20px; */
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-iframe {
+  border: 1px solid black;
+  height: 100%;
+  width: 100%;
 }
 
 .header-input textarea {
