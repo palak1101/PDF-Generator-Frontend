@@ -7,7 +7,7 @@ const Toolbar = ({ template, setTemplate }) => {
   const navigate = useNavigate();
 
   const copyTemplateId = () => {
-    navigator.clipboard.writeText(template.templateId);
+    navigator.clipboard.writeText(template.template_id);
     toast.info("template id copied to clipboard!", {
       autoClose: 1800,
       theme: "dark",

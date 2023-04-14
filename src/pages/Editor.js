@@ -5,6 +5,7 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-html";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-language_tools";
+import "ace-builds/src-min-noconflict/ext-searchbox";
 import beautify from "js-beautify";
 
 import "./Editor.css";
@@ -90,6 +91,7 @@ const EditorPage = () => {
               theme="monokai"
               name="html-editor"
               onChange={(code) => setTemplate({ ...template, htmlCode: code })}
+              debounceChangePeriod={500}
               fontSize={16}
               width="100%"
               // height="100%"
