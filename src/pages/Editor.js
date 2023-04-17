@@ -78,8 +78,7 @@ const EditorPage = () => {
 
   return (
     <div className="mt-4">
-      <Toolbar template={template} setTemplate={setTemplate} />
-      <div className="main-editor">
+      <div className="main-editor d-flex flex-column justify-content-between ">
         <div className="html-panel">
           <h2 className="text-center">{template.title || "Code Editor"}</h2>
 
@@ -114,11 +113,14 @@ const EditorPage = () => {
           </div>
         </div>
 
+        <Toolbar template={template} setTemplate={setTemplate} />
+
         <div className="preview-panel">
           <h2 className="text-center">Preview</h2>
           <iframe
-            srcdoc={template.htmlCode}
+            srcDoc={template.htmlCode}
             className="preview-iframe"
+            orientation={template.orientation}
           ></iframe>
         </div>
       </div>
