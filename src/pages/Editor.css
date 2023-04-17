@@ -2,29 +2,27 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* height: 100vh; */
 }
 
 .html-panel {
-  flex: 1;
   display: flex;
-  /* padding: 20px; */
   flex-direction: column;
+  flex: 1;
 }
 
 .input-panel {
   display: flex;
   flex-direction: column;
-  /* flex: 1; */
-  /* padding: 20px; */
   align-items: center;
   justify-content: center;
 }
 
+/* A4 page */
 .preview-iframe {
-  border: 1px solid black;
-  height: 100%;
-  width: 100%;
+  border: 0.5px solid #ccc;
+  height: 297mm;
+  width: 210mm;
+  padding: 10mm;
 }
 
 .header-input textarea {
@@ -55,8 +53,9 @@
 }
 
 .preview-panel {
+  /* margin: auto; */
   /* height: 65%; */
-  flex: 1;
+  /* flex: 1; */
   /* padding: 20px; */
   /* margin-bottom: 60px; */
 }
@@ -65,7 +64,9 @@
   margin-top: 0;
 }
 
-.preview-panel div {
+/* .preview-panel .preview-div {
   border: 1px solid #ccc;
-  padding: 10px;
-}
+  padding: 10mm;
+  width: 210mm;
+  height: 297mm;
+} */
