@@ -62,6 +62,14 @@ const Toolbar = ({ template, setTemplate }) => {
     }
   };
 
+  const handleOrientationChange = (e) => {
+    console.log(e.target.value);
+    setTemplate({
+      ...template,
+      orientation: e.target.value,
+    });
+  };
+
   return (
     <div className="my-4 px-4 d-flex justify-content-center align-items-center">
       {template?.template_id ? (
@@ -81,6 +89,32 @@ const Toolbar = ({ template, setTemplate }) => {
           <i className="fa-solid fa-save"></i>&nbsp; Save Template
         </button>
       )}
+
+      {/* Page orientation */}
+
+      <div className="mx-2 d-flex gap-2">
+        <label htmlFor="orientation-portrait">
+          <input
+            type="radio"
+            id="orientation-portrait"
+            value="Portrait"
+            checked={template.orientation === "Portrait"}
+            onChange={handleOrientationChange}
+          />
+          Portrait
+        </label>
+
+        <label htmlFor="orientation-landscape">
+          <input
+            type="radio"
+            id="orientation-landscape"
+            value="Landscape"
+            checked={template.orientation === "Landscape"}
+            onChange={handleOrientationChange}
+          />
+          Landscape
+        </label>
+      </div>
     </div>
   );
 };
