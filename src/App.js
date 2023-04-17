@@ -3,6 +3,8 @@ import NavigationBar from "./components/NavigationBar";
 import Home from "./pages/Home";
 import EditorPage from "./pages/Editor";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -15,7 +17,10 @@ const App = () => {
         <Routes>
           <Route exact path="/" element={<Home />}></Route>
           <Route exact path="/editor" element={<EditorPage />}></Route>
+          <Route exact path="/editor/:id" element={<EditorPage />}></Route>
         </Routes>
+
+        <ToastContainer />
       </div>
     </Router>
   );
