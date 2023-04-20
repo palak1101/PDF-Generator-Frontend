@@ -3,8 +3,12 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const itemsPerPage = 5;
+
 const Home = () => {
   const [templates, setTemplates] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const loadTemplates = async () => {
     const result = await axios.get(
@@ -35,6 +39,22 @@ const Home = () => {
     loadTemplates();
   }, []);
 
+  useEffect(() => {
+    const pages = Math.ceil(templates.length / itemsPerPage);
+    setTotalPages(pages);
+  }, [templates]);
+
+  const getPageItems = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return templates.slice(startIndex, endIndex);
+  };
+
+  const handlePageClick = (e, page) => {
+    e.preventDefault();
+    setCurrentPage(page);
+  };
+
   return (
     <div className="container">
       <div className="d-flex justify-content-between align-items-center my-4">
@@ -54,9 +74,11 @@ const Home = () => {
           </tr>
         </thead>
         <tbody>
-          {templates.map((template, index) => (
+          {getPageItems().map((template, index) => (
             <tr key={template.template_id}>
-              <th scope="row">{index + 1}</th>
+              <th scope="row">
+                {itemsPerPage * (currentPage - 1) + (index + 1)}
+              </th>
               <td>{template.title}</td>
               <td>
                 <button
@@ -81,6 +103,55 @@ const Home = () => {
           ))}
         </tbody>
       </table>
+
+      <div className="d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item">
+              <button
+                class="page-link"
+                aria-label="Previous"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentPage((prev) => prev - 1);
+                }}
+                disabled={currentPage === 1}
+              >
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </button>
+            </li>
+
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <li
+                key={index}
+                class="page-item"
+                onClick={(e) => handlePageClick(e, index + 1)}
+                style={{
+                  cursor: "pointer",
+                }}
+              >
+                <span class="page-link">{index + 1}</span>
+              </li>
+            ))}
+
+            <li class="page-item">
+              <button
+                class="page-link"
+                aria-label="Next"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentPage((prev) => prev + 1);
+                }}
+                disabled={currentPage === totalPages}
+              >
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   );
 };
