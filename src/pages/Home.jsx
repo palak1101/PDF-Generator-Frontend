@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 const Home = () => {
   const [templates, setTemplates] = useState([]);
-  const navigate = useNavigate();
 
   const loadTemplates = async () => {
     const result = await axios.get(
@@ -25,9 +24,7 @@ const Home = () => {
 
   const deleteTemplate = async (id) => {
     try {
-      const result = await axios.delete(
-        `${process.env.REACT_APP_BASE_URL}/templates/${id}`
-      );
+      await axios.delete(`${process.env.REACT_APP_BASE_URL}/templates/${id}`);
       loadTemplates();
     } catch (error) {
       console.error(error);

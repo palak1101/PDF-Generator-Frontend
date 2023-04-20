@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Editor.css";
 import { useParams } from "react-router-dom";
@@ -80,10 +80,11 @@ const EditorPage = () => {
         <div className="preview-panel">
           <h2 className="text-center">Preview</h2>
           <iframe
+            title="preview"
             srcDoc={template.htmlCode}
             className="preview-iframe"
             orientation={template.orientation}
-          ></iframe>
+          />
         </div>
       </div>
     </div>
