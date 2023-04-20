@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import Toolbar from "../components/Toolbar";
 import SchemaGenerator from "../components/SchemaGenerator";
 import HtmlEditor from "../components/HtmlEditor";
+import Preview from "../components/Preview";
 
 const DEFAULT_HTML_CODE = `<html>
 \t<head>
@@ -15,7 +16,7 @@ const DEFAULT_HTML_CODE = `<html>
 \t\t</style>
 \t</head>
 \t<body>
-
+\t\t<div class="newpage">Hello World</div>
 \t</body>
 </html>`;
 
@@ -45,7 +46,6 @@ const EditorPage = () => {
         if (!success) {
           return alert("Error loading the selected template!");
         }
-
         setTemplate(data);
       })
       .catch((error) => {
@@ -78,13 +78,7 @@ const EditorPage = () => {
         <Toolbar template={template} setTemplate={setTemplate} />
 
         <div className="preview-panel">
-          <h2 className="text-center">Preview</h2>
-          <iframe
-            title="preview"
-            srcDoc={template.htmlCode}
-            className="preview-iframe"
-            orientation={template.orientation}
-          />
+          <Preview template={template} />
         </div>
       </div>
     </div>
