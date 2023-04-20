@@ -1,7 +1,7 @@
 import React from "react";
 import NavigationBar from "./components/NavigationBar";
 import Home from "./pages/Home";
-import EditorPage from "./pages/Editor";
+import EditorPage from "./pages/EditorPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
