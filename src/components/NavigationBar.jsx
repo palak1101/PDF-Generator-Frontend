@@ -26,6 +26,16 @@ const NavigationBar = () => {
                   Editor
                 </Link>
               </li>
+
+              <li className="nav-item">
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to="/readme"
+                >
+                  Read me
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

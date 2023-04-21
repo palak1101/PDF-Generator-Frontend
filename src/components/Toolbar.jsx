@@ -101,7 +101,7 @@ const Toolbar = ({ template, setTemplate }) => {
             checked={template.orientation === "Portrait"}
             onChange={handleOrientationChange}
           />
-          Portrait
+          &nbsp;Portrait
         </label>
 
         <label htmlFor="orientation-landscape">
@@ -112,7 +112,7 @@ const Toolbar = ({ template, setTemplate }) => {
             checked={template.orientation === "Landscape"}
             onChange={handleOrientationChange}
           />
-          Landscape
+          &nbsp;Landscape
         </label>
       </div>
     </div>

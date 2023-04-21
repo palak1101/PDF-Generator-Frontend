@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const Preview = ({ template }) => {
   const containerRef = useRef();
+  const [pageCount, setPageCount] = useState(0);
 
   useEffect(() => {
     if (!template.htmlCode) return;
@@ -22,6 +23,7 @@ const Preview = ({ template }) => {
 
       // Select all elements with the "newpage" class
       const newpageElements = doc.querySelectorAll(".newpage");
+      setPageCount(newpageElements.length);
 
       containerRef.current.innerHTML = "";
 
@@ -29,7 +31,7 @@ const Preview = ({ template }) => {
       newpageElements.forEach((el) => {
         const iframe = document.createElement("iframe");
 
-        const newOuterHTML = `<div style="${style}">${el.outerHTML}</div>`;
+        const newOuterHTML = `<html><head><style>${style}</style></head><body>${el.outerHTML}</body></html>`;
         console.log(newOuterHTML);
         iframe.srcdoc = newOuterHTML;
         iframe.classList.add("preview-iframe");
@@ -42,7 +44,10 @@ const Preview = ({ template }) => {
 
   return (
     <div className="text-center">
-      <h2 className="text-center">Preview</h2>
+      <div>
+        <h2 className="text-center">Preview</h2>
+        <p className="text-center">Pages: {pageCount}</p>
+      </div>
       <div
         ref={containerRef}
         style={{
