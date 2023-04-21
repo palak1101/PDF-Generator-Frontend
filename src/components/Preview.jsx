@@ -46,7 +46,7 @@ const Preview = ({ template }) => {
     <div className="text-center">
       <div>
         <h2 className="text-center">Preview</h2>
-        <p>Pages: {pageCount}</p>
+        <p className="text-center">Pages: {pageCount}</p>
       </div>
       <div
         ref={containerRef}
