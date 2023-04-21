@@ -29,7 +29,7 @@ const Preview = ({ template }) => {
       newpageElements.forEach((el) => {
         const iframe = document.createElement("iframe");
 
-        const newOuterHTML = `<div style="${style}">${el.outerHTML}</div>`;
+        const newOuterHTML = `<html><head><style>${style}</style></head><body>${el.outerHTML}</body></html>`;
         console.log(newOuterHTML);
         iframe.srcdoc = newOuterHTML;
         iframe.classList.add("preview-iframe");
